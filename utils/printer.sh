@@ -5,3 +5,7 @@ echo_red(){
 echo_yellow(){
     /bin/echo -e "\033[93m${*}\033[0m"
 }
+
+echo_green(){
+    /bin/echo -e "\033[92m${*}\033[0m"
+}

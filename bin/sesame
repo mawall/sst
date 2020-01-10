@@ -1,0 +1,69 @@
+#! /bin/bash
+
+ROOT_DIR=$(echo $0 | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
+
+# shellcheck disable=SC1090
+for u in $ROOT_DIR/utils/*.sh; do source "$u"; done
+
+usage(){
+cat <<EOF
+USAGE: sesame [OPTIONS]
+    A convenience utility to handle an encrypted private directory on Dropbox using ecryptfs
+
+OPTIONS:
+    -o|--open               Install linux default package
+    -c|--close              Install mac default package
+    -s|--status             Install fusuma package
+EOF
+}
+
+sesame_open(){
+  sudo mkdir -p $MOUNT_DIR
+  sudo mount -t ecryptfs $SESAME_DIR $MOUNT_DIR
+}
+
+sesame_close(){
+  sudo umount $MOUNT_DIR
+  while mountpoint -q $MOUNT_DIR; do
+    true  # waiting
+  done
+  sudo rm -rf $MOUNT_DIR
+}
+
+sesame_status(){
+  if mountpoint -q $MOUNT_DIR; then
+    echo_green "Sesame is open"
+  else
+    echo_red "Sesame is closed"
+  fi
+}
+
+SESAME_DIR=$HOME/Dropbox/private
+MOUNT_DIR=/mnt/sesame
+while [[ $# -gt 0 ]]; do
+
+  case $1 in
+    -h|--help|help)
+    usage
+    exit 0 ;;
+
+    -o|--open|open)
+    sesame_open
+    exit 0 ;;
+
+    -c|--close|close)
+    sesame_close
+    exit 0 ;;
+
+    -s|--status|status)
+    sesame_status
+    exit 0 ;;
+
+    *)
+    echo_red "Unknown option: $1";
+    usage
+    exit 1 ;;
+  esac
+
+done
+usage
