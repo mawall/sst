@@ -1,5 +1,11 @@
 #! /bin/bash
 
+ROOT_DIR=$(echo $0 | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
+
+# shellcheck disable=SC1090
+for u in $ROOT_DIR/utils/*.sh; do source "$u"; done
+#for p in $ROOT_DIR/packages/*.sh; do source "$p"; done
+
 usage(){
 cat <<EOF
 USAGE: sst [OPTIONS]
@@ -41,38 +47,6 @@ OPTIONS:
        --uninstall_nvidia   Uninstalls all nvidia software. If specified, the script will exit afterwards
        --uninstall_docker   Uninstalls docker. If specified, the script will exit afterwards
 EOF
-}
-
-echo_red(){
-    /bin/echo -e "\033[31m${*}\033[0m"
-}
-
-echo_yellow(){
-    /bin/echo -e "\033[93m${*}\033[0m"
-}
-
-check_if_linux(){
-  if [ -z "$OS" ]; then
-    read -p "Are you on linux [y/n]? " -n 1 -r
-    echo
-    if [ "$REPLY" = Y ] || [ "$REPLY" = y ]; then
-      OS="linux"
-    else
-      OS="not_linux"
-    fi
-  fi
-}
-
-link_dotfiles(){
-  dotfiles=(~/.dotfiles/.*)
-  for p in "${dotfiles[@]}"; do
-    f="$(echo $p | tr '/' '\n' | tail -1)"
-    if ! grep -Fxq "$f" ~/.dotfiles/.gitignore_global && [ "$f" != '.git' ]
-    then
-      ln -s ~/.dotfiles/"$f" ~
-      echo "Linked $f"
-    fi
-  done
 }
 
 install_linux(){
@@ -170,7 +144,7 @@ install_fusuma(){
   sudo gem update fusuma
   # create config file
   mkdir -p ~/.config/fusuma
-  cp ../config/fusuma.yml ~/.config/fusuma/config.yml
+  cp $ROOT_DIR/config/fusuma.yml ~/.config/fusuma/config.yml
 }
 
 uninstall_nvidia_all(){
@@ -317,7 +291,7 @@ EOF
 }
 
 configure_vim(){
-  tic -o ~/.terminfo ../config/xterm-256color.terminfo
+  tic -o ~/.terminfo $ROOT_DIR/config/xterm-256color.terminfo
   export TERM=xterm-256color
 
   # Install Vundle
