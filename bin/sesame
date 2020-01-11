@@ -11,9 +11,9 @@ USAGE: sesame [OPTIONS]
     A convenience utility to handle an encrypted private directory on Dropbox using ecryptfs
 
 OPTIONS:
-    -o|--open               Install linux default package
-    -c|--close              Install mac default package
-    -s|--status             Install fusuma package
+    -o|--open               Mount and decrypt private directory as sesame
+    -c|--close              Encrypt and unmount sesame
+    -s|--status             Print mount status
 EOF
 }
 
