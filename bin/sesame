@@ -19,7 +19,10 @@ EOF
 
 sesame_open(){
   sudo mkdir -p $MOUNT_DIR
-  sudo mount -t ecryptfs $SESAME_DIR $MOUNT_DIR
+  while [ ! -d $MOUNT_DIR ]; do
+    true  # waiting
+  done
+  sudo mount -t ecryptfs -o "ecryptfs_cipher=aes,ecryptfs_key_bytes=32,ecryptfs_passthrough=no,ecryptfs_enable_filename_crypto=yes" $SESAME_DIR $MOUNT_DIR
 }
 
 sesame_close(){
