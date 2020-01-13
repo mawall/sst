@@ -1,36 +1,65 @@
 #! /bin/bash
 
 ROOT_DIR=$(echo $0 | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
+CONFIG="$HOME/.config/sesame/sesame.cfg"
 
+create_config(){
+  mkdir -p $(dirname "$CONFIG")
+  touch $CONFIG
+  set_config "SESAME_METHOD" "cryfs"
+}
+
+# import utils
 # shellcheck disable=SC1090
 for u in $ROOT_DIR/utils/*.sh; do source "$u"; done
+
+#import config
+if [ -f "$CONFIG" ]; then source $CONFIG; else create_config && source $CONFIG; fi
+
 
 usage(){
 cat <<EOF
 USAGE: sesame [OPTIONS]
-    A convenience utility to handle an encrypted private directory on Dropbox using ecryptfs
+    A convenience utility to handle directory encryption using ecryptfs or cryfs.
 
 OPTIONS:
-    -o|--open               Mount and decrypt private directory as sesame
-    -c|--close              Encrypt and unmount sesame
-    -s|--status             Print mount status
+    -o|--open               Mount and decrypt private directory as sesame.
+    -c|--close              Encrypt and unmount sesame.
+    -s|--status             Print mount status.
+    -m|--method             Choose which encryption utility to use. The default
+                            method is cryfs.
+
 EOF
 }
 
 sesame_open(){
-  sudo mkdir -p $MOUNT_DIR
+  mkdir -p $MOUNT_DIR
   while [ ! -d $MOUNT_DIR ]; do
     true  # waiting
   done
-  sudo mount -t ecryptfs -o "ecryptfs_cipher=aes,ecryptfs_key_bytes=32,ecryptfs_passthrough=no,ecryptfs_enable_filename_crypto=yes" $SESAME_DIR $MOUNT_DIR
+
+  if [ "$SESAME_METHOD" = "ecryptfs" ]; then
+    sudo mount -t ecryptfs -o "ecryptfs_cipher=aes,ecryptfs_key_bytes=16,ecryptfs_passthrough=no,ecryptfs_enable_filename_crypto=yes" $SESAME_DIR $MOUNT_DIR
+  elif [ "$SESAME_METHOD" = "cryfs" ] || [ -z "$SESAME_METHOD" ]; then
+    cryfs $SESAME_DIR $MOUNT_DIR
+  else
+    echo_red "Unknown encryption method"
+  fi
 }
 
 sesame_close(){
-  sudo umount $MOUNT_DIR
+  if [ "$SESAME_METHOD" = "ecryptfs" ]; then
+    sudo umount $MOUNT_DIR
+  elif [ "$SESAME_METHOD" = "cryfs" ] || [ -z "$SESAME_METHOD" ]; then
+    cryfs-unmount $MOUNT_DIR
+  else
+    echo_red "Unknown encryption method"
+  fi
+
   while mountpoint -q $MOUNT_DIR; do
     true  # waiting
   done
-  sudo rm -rf $MOUNT_DIR
+  rm -r $MOUNT_DIR
 }
 
 sesame_status(){
@@ -39,10 +68,18 @@ sesame_status(){
   else
     echo_red "Sesame is closed"
   fi
+  echo "[Using $SESAME_METHOD]"
+}
+
+set_method(){
+  choices=("cryfs" "ecryptfs")
+  selection=$(printf '%s\n' "${choices[@]}" | fzf)
+  set_config "SESAME_METHOD" "$selection"
+  echo "Method changed: Now using $selection"
 }
 
 SESAME_DIR=$HOME/Dropbox/private
-MOUNT_DIR=/mnt/sesame
+MOUNT_DIR=$HOME/mnt/sesame
 while [[ $# -gt 0 ]]; do
 
   case $1 in
@@ -52,15 +89,19 @@ while [[ $# -gt 0 ]]; do
 
     -o|--open|open)
     sesame_open
-    exit 0 ;;
+    shift 1 ;;
 
     -c|--close|close)
     sesame_close
-    exit 0 ;;
+    shift 1 ;;
 
     -s|--status|status)
     sesame_status
-    exit 0 ;;
+    shift 1 ;;
+
+    -m|--method|method)
+    set_method
+    shift 1 ;;
 
     *)
     echo_red "Unknown option: $1";
@@ -69,4 +110,3 @@ while [[ $# -gt 0 ]]; do
   esac
 
 done
-usage

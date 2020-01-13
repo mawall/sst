@@ -12,40 +12,40 @@ USAGE: sst [OPTIONS]
     Marcus' system setup tool - installs and configures software and working environment on unix-based systems.
 
     List of available packages for installation:
-        - linux:            Basic linux utilities, oh my zsh, tmux and fzf
-        - mac:              Homebrew, oh my zsh, tmux and fzf
-        - fusuma:           Multitouch gestures for Ubuntu
-        - docker:           Latest stable release for distribution
-        - nvidia drivers:   Latest stable Nvidia drivers for Ubuntu
-        - nvidia cuda:      Installs kernel headers and latest cuda packages
-        - nvidia-docker:    Nvidia container toolkit to build and run GPU accelerated Docker containers
-        - nvtop:            An htop like GPU status monitor
-        - dropbox:          Dropbox daemon
+        - linux:            Basic linux utilities, oh my zsh, tmux and fzf.
+        - mac:              Homebrew, oh my zsh, tmux and fzf.
+        - fusuma:           Multitouch gestures for Ubuntu.
+        - docker:           Latest stable release for distribution.
+        - nvidia drivers:   Latest stable Nvidia drivers for Ubuntu.
+        - nvidia cuda:      Installs kernel headers and latest cuda packages.
+        - nvidia-docker:    Nvidia container toolkit to build and run GPU accelerated Docker containers.
+        - nvtop:            An htop like GPU status monitor.
+        - dropbox:          Dropbox daemon.
 
     Tested on :
         - Ubuntu 18.04
         - macOS Mojave
 
     After the installation, remember to:
-        - Use 'prefix + I' when first starting tmux to install plugins
+        - Use 'prefix + I' when first starting tmux to install plugins.
     If you installed fusuma:
-        1. Check fusuma installation path using 'which fusuma'
-        2. Press alt + F2, enter 'gnome-session-properties'
-        3. Add fusuma using the -d option
+        1. Check fusuma installation path using 'which fusuma'.
+        2. Press alt + F2, enter 'gnome-session-properties'.
+        3. Add fusuma using the -d option.
 
 OPTIONS:
-    -l|--linux              Install linux default package
-    -m|--mac                Install mac default package
-    -f|--fusuma             Install fusuma package
-    -d|--docker             Install or uninstall and reinstall docker
-       --nvidia_drivers     Install or uninstall and reinstall nvidia drivers
-       --nvidia_cuda        Install or uninstall and reinstall nvidia cuda
-       --nvidia_docker      Install nvidia-docker package
-       --nvtop              Install nvtop package
-       --dropbox            Install dropbox package
+    -l|--linux              Install linux default package.
+    -m|--mac                Install mac default package.
+    -f|--fusuma             Install fusuma package.
+    -d|--docker             Install or uninstall and reinstall docker.
+       --nvidia_drivers     Install or uninstall and reinstall nvidia drivers.
+       --nvidia_cuda        Install or uninstall and reinstall nvidia cuda.
+       --nvidia_docker      Install nvidia-docker package.
+       --nvtop              Install nvtop package.
+       --dropbox            Install dropbox package.
 
-       --uninstall_nvidia   Uninstalls all nvidia software. If specified, the script will exit afterwards
-       --uninstall_docker   Uninstalls docker. If specified, the script will exit afterwards
+       --uninstall_nvidia   Uninstalls all nvidia software. If specified, the script will exit afterwards.
+       --uninstall_docker   Uninstalls docker. If specified, the script will exit afterwards.
 EOF
 }
 
@@ -151,7 +151,7 @@ while [[ $# -gt 0 ]]; do
     shift 1 ;;
 
     --dropbox)
-    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} dropbox"
+    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} dropbox cryfs"
     shift 1 ;;
 
     --uninstall_nvidia)

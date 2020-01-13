@@ -5,6 +5,10 @@ install_mac(){
   echo_yellow "Installing homebrew"
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+  echo_yellow "Installing default packages"
+  brew cask install oxfuse
+  brew install cryfs
+
   echo_yellow "Installing powerline fonts"
   git clone https://github.com/powerline/fonts.git --depth=1
   cd fonts

@@ -2,7 +2,7 @@ install_linux(){
   echo_yellow "Installing linux defaults"
   cd ~
 
-  echo_yellow "Installing packages"
+  echo_yellow "Installing default packages"
   sudo apt update && sudo apt install -y \
     vim-gnome \
     zsh \
