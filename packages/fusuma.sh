@@ -1,6 +1,6 @@
 install_fusuma(){
-  check_if_linux && if [ ! "$OS" = "linux" ]; then
-    echo_red "fusuma can only be installed on linux" && return 1
+  if [ ! "$OS" = "linux" ]; then
+    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
   fi
 
   # Install fusuma for trackpad multitouch gestures

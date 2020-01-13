@@ -43,6 +43,10 @@ check_which_os(){
     choices=("linux" "mac-os")
     display_len=$(( ${#choices[@]} > 10 ? 10 : ${#choices[@]} ))
     OS=$(printf '%s\n' "${choices[@]}" | fzf --height=$display_len)
+    if [ -z "$OS" ]; then
+      echo -e "\033[31m[check_which_os] Operating system not specified\033[0m"
+      exit 1
+    fi
   fi
 }
 

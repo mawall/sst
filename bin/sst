@@ -12,8 +12,8 @@ USAGE: sst [OPTIONS]
     Marcus' system setup tool - installs and configures software and working environment on unix-based systems.
 
     List of available packages for installation:
-        - linux:            Basic linux utilities, oh my zsh, tmux and fzf.
-        - mac:              Homebrew, oh my zsh, tmux and fzf.
+        - defaults [linux]: Basic linux utilities, oh my zsh, tmux and fzf.
+        - defaults [mac]:   Homebrew, oh my zsh, tmux and fzf.
         - fusuma:           Multitouch gestures for Ubuntu.
         - docker:           Latest stable release for distribution.
         - nvidia drivers:   Latest stable Nvidia drivers for Ubuntu.
@@ -34,10 +34,9 @@ USAGE: sst [OPTIONS]
         3. Add fusuma using the -d option.
 
 OPTIONS:
-    -l|--linux              Install linux default package.
-    -m|--mac                Install mac default package.
-    -f|--fusuma             Install fusuma package.
-    -d|--docker             Install or uninstall and reinstall docker.
+    -d|--defaults           Install os-specific default packages.
+       --fusuma             Install fusuma package.
+       --docker             Install or uninstall and reinstall docker.
        --nvidia_drivers     Install or uninstall and reinstall nvidia drivers.
        --nvidia_cuda        Install or uninstall and reinstall nvidia cuda.
        --nvidia_docker      Install nvidia-docker package.
@@ -50,7 +49,7 @@ EOF
 }
 
 uninstall_nvidia_all(){
-  check_if_linux && if [ ! "$OS" = "linux" ]; then
+  if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
   fi
 
@@ -66,7 +65,7 @@ uninstall_nvidia_all(){
 }
 
 uninstall_docker(){
-  check_if_linux && if [ ! "$OS" = "linux" ]; then
+  if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling docker is currently only implemented for linux" && return 1
   fi
 
@@ -91,19 +90,12 @@ configure_vim(){
 
 
 main(){
-  if [ -n "$OS" ]; then
-    install_"$OS"
-  elif [ -z "$PACKAGES_TO_INSTALL" ]; then
-    echo_red "No operating system specified."
+  if [ -z "$PACKAGES_TO_INSTALL" ]; then
     usage
-  else
-    read -p "No operating system specified. Continue to install specified software packages [y/n]? " -n 1 -r
-    echo
-    if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-      echo_red "Exiting." && exit 1
-    fi
+    exit 0
   fi
 
+  OS=check_which_os
   for PACKAGE in $PACKAGES_TO_INSTALL; do
     install_"$PACKAGE"
   done
@@ -126,11 +118,11 @@ while [[ $# -gt 0 ]]; do
     OS="mac"
     shift 1 ;;
 
-    -f|--fusuma)
+    --fusuma)
     PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} fusuma"
     shift 1 ;;
 
-    -d|--docker)
+    --docker)
     PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} docker"
     shift 1 ;;
 

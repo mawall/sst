@@ -1,6 +1,6 @@
 install_docker(){
-  check_if_linux && if [ ! "$OS" = "linux" ]; then
-    echo_red "docker installation is currently only implemented for linux" && return 1
+  if [ ! "$OS" = "linux" ]; then
+    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
   fi
 
   echo_yellow "Installing latest stable docker release"

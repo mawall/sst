@@ -1,6 +1,6 @@
 install_dropbox(){
-  check_if_linux && if [ ! "$OS" = "linux" ]; then
-    echo_red "nvtop installation is currently only implemented for linux" && return 1
+  if [ ! "$OS" = "linux" ]; then
+    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
   fi
 
   EXCLUDED_DROPBOX_DIRS=("$HOME/Dropbox/archive"
