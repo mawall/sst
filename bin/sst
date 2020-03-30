@@ -96,7 +96,7 @@ main(){
     exit 0
   fi
 
-  OS=check_which_os
+  check_which_os
   for PACKAGE in $PACKAGES_TO_INSTALL; do
     install_"$PACKAGE"
   done
