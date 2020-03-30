@@ -1,6 +1,6 @@
 #! /bin/bash
 
-ABSPATH="$(cd "$(dirname "$1")"; pwd -P)/$(basename "$1")"
+ABSPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 ROOT_DIR=$(echo "$ABSPATH" | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
 
 # shellcheck disable=SC1090
