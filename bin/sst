@@ -119,6 +119,10 @@ while [[ $# -gt 0 ]]; do
     OS="mac"
     shift 1 ;;
 
+    -d|--defaults)
+    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} defaults"
+    shift 1 ;;
+
     --fusuma)
     PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} fusuma"
     shift 1 ;;
