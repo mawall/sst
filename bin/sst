@@ -1,6 +1,7 @@
 #! /bin/bash
 
-ROOT_DIR=$(echo $0 | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
+ABSPATH="$(cd "$(dirname "$1")"; pwd -P)/$(basename "$1")"
+ROOT_DIR=$(echo "$ABSPATH" | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
 
 # shellcheck disable=SC1090
 for u in $ROOT_DIR/utils/*.sh; do source "$u"; done

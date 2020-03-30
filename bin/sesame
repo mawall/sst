@@ -68,14 +68,14 @@ sesame_status(){
   else
     echo_red "Sesame is closed"
   fi
-  echo "[Method] $SESAME_METHOD"
+  echo "[method] $SESAME_METHOD"
 }
 
 set_method(){
   choices=("cryfs" "ecryptfs")
   display_len=$(( ${#choices[@]} > 10 ? 10 : ${#choices[@]} ))
   selection=$(printf '%s\n' "${choices[@]}" | fzf --height=$display_len)
-  set_config "SESAME_METHOD" "$selection" && echo "[Method] Updated to $selection"
+  set_config "SESAME_METHOD" "$selection" && echo "[method] Updated to $selection"
 }
 
 SESAME_DIR=$HOME/Dropbox/private
