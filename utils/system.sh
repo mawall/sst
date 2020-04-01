@@ -76,3 +76,19 @@ link_dotfiles(){
     fi
   done
 }
+
+get_package_names(){
+  # get package names from filenames in package dir
+
+  shopt -s nullglob
+  filenames=(../packages/*)
+  shopt -u nullglob
+
+  if (( ${#filenames[@]} == 0 )); then
+    echo "No packages found" >&2
+  fi
+
+  for f in "${filenames[@]}"; do
+    package_names+=( "$( echo "$f" | sed -e 's#^../packages/##; s#.sh$##' )")
+  done
+}
