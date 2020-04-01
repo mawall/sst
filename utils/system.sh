@@ -1,5 +1,6 @@
-# binary_prompt - y/n prompts that work in bash and zsh
 binary_prompt(){
+  # y/n prompts that work in bash and zsh.
+
   current_shell=$(ps -p "$$" | awk '{if (NR!=1) {print $NF}}')
 
   if [ "$current_shell" = "zsh" ]; then
@@ -18,8 +19,10 @@ binary_prompt(){
   fi
 }
 
-# set_config - change values in config files or create key=value pair/config file if it doesn't exist
 set_config(){
+  # change values in config files or create key=value pair/config file
+  # if it doesn't exist.
+
   if [ -z "$1" ] || [ -z "$2" ]; then
     echo -e "\033[31m[set_config] Need a variable name and a value to set\033[0m"
     exit 1
@@ -60,8 +63,9 @@ check_if_linux(){
   fi
 }
 
-# link_dotfiles - symlink dotfiles from ~/.dotfiles into home directory
 link_dotfiles(){
+  # symlink dotfiles from ~/.dotfiles into home directory
+
   dotfiles=(~/.dotfiles/.*)
   for p in "${dotfiles[@]}"; do
     f="$(echo $p | tr '/' '\n' | tail -1)"

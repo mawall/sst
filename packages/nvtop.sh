@@ -8,6 +8,10 @@ install_nvtop(){
   git clone https://github.com/Syllo/nvtop.git
   mkdir -p nvtop/build && cd nvtop/build
   cmake ..
-  make && sudo make install
-  cd ~ && rm -rf nvtop
+  exit_status=$(make && sudo make install)
+  if [ "$exit_status" -eq 0 ]; then
+    cd ~ && rm -rf nvtop
+  else
+    echo_red "Could not install nvtop. Check ~/nvtop for details." >&2
+  fi
 }
