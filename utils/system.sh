@@ -94,6 +94,16 @@ get_package_names(){
   done
 }
 
+is_package_name(){
+  get_package_names
+  for pn in "${PKG_NAMES[@]}"; do
+      if [ "$pn" == "$1" ] ; then
+          return 0
+      fi
+  done
+  return 1
+}
+
 get_package_info(){
   get_package_names
 
