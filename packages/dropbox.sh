@@ -1,3 +1,7 @@
+describe_dropbox(){
+  echo "Dropbox daemon."
+}
+
 install_dropbox(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1

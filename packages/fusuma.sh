@@ -1,3 +1,8 @@
+describe_fusuma(){
+  echo "Multitouch gestures for Ubuntu."
+}
+
+
 install_fusuma(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1

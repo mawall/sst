@@ -7,21 +7,17 @@ ROOT_DIR=$(echo "$ABSPATH" | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{pri
 for u in $ROOT_DIR/utils/*.sh; do source "$u"; done
 for p in $ROOT_DIR/packages/*.sh; do source "$p"; done
 
+get_package_info
+
 usage(){
 cat <<EOF
 USAGE: sst [OPTIONS]
     Marcus' system setup tool - installs and configures software and working environment on unix-based systems.
 
     List of available packages for installation:
-        - defaults [linux]: Basic linux utilities, oh my zsh, tmux and fzf.
-        - defaults [mac]:   Homebrew, oh my zsh, tmux and fzf.
-        - fusuma:           Multitouch gestures for Ubuntu.
-        - docker:           Latest stable release for distribution.
-        - nvidia drivers:   Latest stable Nvidia drivers for Ubuntu.
-        - nvidia cuda:      Installs kernel headers and latest cuda packages.
-        - nvidia-docker:    Nvidia container toolkit to build and run GPU accelerated Docker containers.
-        - nvtop:            An htop like GPU status monitor.
-        - dropbox:          Dropbox daemon.
+EOF
+printf '        - %-20s %s\n' "${PKG_INFO[@]}"
+cat <<EOF
 
     Tested on :
         - Ubuntu 18.04
@@ -102,8 +98,8 @@ main(){
   done
 }
 
-OS=""
-PACKAGES_TO_INSTALL=""
+unset OS
+unset PACKAGES_TO_INSTALL
 while [[ $# -gt 0 ]]; do
 
   case $1 in

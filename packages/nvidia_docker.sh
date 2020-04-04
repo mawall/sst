@@ -1,3 +1,7 @@
+describe_nvidia_docker(){
+  echo "Nvidia container toolkit to build and run GPU accelerated Docker containers."
+}
+
 install_nvidia_docker(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1

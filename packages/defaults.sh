@@ -1,3 +1,7 @@
+describe_defaults(){
+  echo "Basic utilities including oh my zsh, tmux and fzf."
+}
+
 install_defaults(){
   install_"$OS"
 }
