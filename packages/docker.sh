@@ -1,3 +1,7 @@
+describe_docker(){
+  echo "Latest stable release for distribution."
+}
+
 install_docker(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1

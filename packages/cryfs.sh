@@ -1,3 +1,7 @@
+describe_cryfs(){
+  echo "A cryptographic file system."
+}
+
 install_cryfs(){
   sudo apt install -y libcurl4-openssl-dev libssl-dev libfuse-dev
   pip install conan

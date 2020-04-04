@@ -1,3 +1,7 @@
+describe_nvidia_drivers(){
+  echo "Latest stable Nvidia drivers for Ubuntu."
+}
+
 install_nvidia_drivers(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1

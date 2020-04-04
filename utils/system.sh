@@ -77,14 +77,29 @@ get_package_names(){
   # get package names from filenames in package dir
 
   shopt -s nullglob
-  filenames=(../packages/*)
+  filenames=("$ROOT_DIR"/packages/*)
   shopt -u nullglob
 
   if (( ${#filenames[@]} == 0 )); then
     echo "No packages found" >&2
   fi
 
+  unset PKG_NAMES
   for f in "${filenames[@]}"; do
-    package_names+=( "$( echo "$f" | sed -e 's#^../packages/##; s#.sh$##' )")
+    PKG_NAMES+=( "$( echo "$f" | sed -e "s#^${ROOT_DIR}/packages/##; s#.sh\$##" )")
+  done
+}
+
+get_package_info(){
+  get_package_names
+
+  unset PKG_DESC
+  for n in "${PKG_NAMES[@]}"; do
+    PKG_DESC+=( "$( "describe_$n" )")
+  done
+
+  unset PKG_INFO
+  for (( i=0; i<${#PKG_NAMES[@]}; ++i)); do
+    PKG_INFO+=( "${PKG_NAMES[$i]}" "${PKG_DESC[$i]}" )
   done
 }

@@ -1,3 +1,7 @@
+describe_nvidia_cuda(){
+  echo "Installs kernel headers and latest cuda packages."
+}
+
 install_nvidia_cuda(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
