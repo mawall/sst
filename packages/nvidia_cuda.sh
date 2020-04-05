@@ -4,7 +4,7 @@ describe_nvidia_cuda(){
 
 install_nvidia_cuda(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
+    echo_red "installing nvidia_cuda is currently only implemented for linux" && return 1
   fi
 
   cd ~ && echo_yellow "Installing nvidia cuda"

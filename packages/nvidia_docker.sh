@@ -4,7 +4,7 @@ describe_nvidia_docker(){
 
 install_nvidia_docker(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
+    echo_red "installing nvidia_docker is currently only implemented for linux" && return 1
   fi
 
   cd ~ && echo_yellow "Installing nvidia-docker"

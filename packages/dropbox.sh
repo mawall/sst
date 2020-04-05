@@ -4,7 +4,7 @@ describe_dropbox(){
 
 install_dropbox(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
+    echo_red "installing dropbox is currently only implemented for linux" && return 1
   fi
 
   EXCLUDED_DROPBOX_DIRS=("$HOME/Dropbox/archive"

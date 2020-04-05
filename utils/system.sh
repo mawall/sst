@@ -1,3 +1,32 @@
+function_exists(){
+    declare -f $1 > /dev/null
+    return $?
+}
+
+verify_package_completeness(){
+  all_complete=true
+  for pn in "${PKG_NAMES[@]}"; do
+    function_exists describe_"$pn"
+    if [ $? -eq 1 ]; then
+      echo_red "Package $pn lacks function describe_$pn"
+      all_complete=false
+    fi
+    function_exists install_"$pn"
+    if [ $? -eq 1 ]; then
+      echo_red "Package $pn lacks function install_$pn"
+      all_complete=false
+    fi
+    function_exists uninstall_"$pn"
+    if [ $? -eq 1 ]; then
+      echo_red "Package $pn lacks function uninstall_$pn"
+      all_complete=false
+    fi
+  done
+  if [ "$all_complete" = false ] ; then
+    exit 1
+  fi
+}
+
 binary_prompt(){
   # y/n prompts that work in bash and zsh.
 

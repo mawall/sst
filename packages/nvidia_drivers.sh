@@ -4,7 +4,7 @@ describe_nvidia_drivers(){
 
 install_nvidia_drivers(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
+    echo_red "installing nvidia_drivers is currently only implemented for linux" && return 1
   fi
 
   echo_yellow "Installing nvidia drivers"

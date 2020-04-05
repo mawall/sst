@@ -32,13 +32,13 @@ cat <<EOF
         3. Add fusuma using the -d option.
 
 OPTIONS:
-    -u|--uninstall          Flag all packages after this argument for uninstall.
-    -l|--linux              Explicitly specify linux as operating system.
-    -m|--mac                Explicitly specify macOS as operating system.
-       --uninstall_nvidia   Uninstalls all nvidia software. If specified, the
-                            script will exit afterwards.
-       --uninstall_docker   Uninstalls docker. If specified, the script will
-                            exit afterwards.
+    -u|--uninstall             Flag all packages after this argument for uninstall.
+    -l|--linux                 Explicitly specify linux as operating system.
+    -m|--mac                   Explicitly specify macOS as operating system.
+       --uninstall_nvidia      Uninstalls all nvidia software. If specified, the
+                               script will exit afterwards.
+       --uninstall_docker      Uninstalls docker. If specified, the script will
+                               exit afterwards.
 EOF
 }
 
@@ -58,22 +58,6 @@ uninstall_nvidia_all(){
   fi
 }
 
-uninstall_docker(){
-  if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling docker is currently only implemented for linux" && return 1
-  fi
-
-  read -p "Do you really want to uninstall docker [y/n]? " -n 1 -r
-  echo
-  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
-  else
-    sudo apt-get -y purge '^docker-.*'
-    sudo apt-get -y purge containerd runc
-    sudo apt-get -y autoremove
-  fi
-}
-
 configure_vim(){
   tic -o ~/.terminfo $ROOT_DIR/config/xterm-256color.terminfo
   export TERM=xterm-256color
@@ -84,7 +68,9 @@ configure_vim(){
 
 
 main(){
+   verify_package_completeness
   if [ -z "$PACKAGES_TO_INSTALL" ] && [ -z "$PACKAGES_TO_UNINSTALL" ]; then
+    echo_red "No packages specified."
     usage
     exit 0
   fi
