@@ -8,17 +8,17 @@ verify_package_completeness(){
   for pn in "${PKG_NAMES[@]}"; do
     function_exists describe_"$pn"
     if [ $? -eq 1 ]; then
-      echo_red "Package $pn lacks function describe_$pn"
+      echo_red "Package $pn incomplete: function describe_$pn is missing"
       all_complete=false
     fi
     function_exists install_"$pn"
     if [ $? -eq 1 ]; then
-      echo_red "Package $pn lacks function install_$pn"
+      echo_red "Package $pn incomplete: function install_$pn is missing"
       all_complete=false
     fi
     function_exists uninstall_"$pn"
     if [ $? -eq 1 ]; then
-      echo_red "Package $pn lacks function uninstall_$pn"
+      echo_red "Package $pn incomplete: function uninstall_$pn is missing"
       all_complete=false
     fi
   done
