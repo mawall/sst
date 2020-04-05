@@ -12,11 +12,12 @@ get_package_info
 usage(){
 cat <<EOF
 USAGE: sst [OPTIONS] [PACKAGES]
-    Marcus' system setup tool - installs and configures software and working environment on unix-based systems.
+    Marcus' system setup tool - installs and configures software and working
+    environment on unix-based systems.
 
     List of available packages for installation:
 EOF
-printf '        - %-20s %s\n' "${PKG_INFO[@]}"
+printf '        - %-20s %-10s\n' "${PKG_INFO[@]}"
 cat <<EOF
 
     Tested on :
@@ -31,10 +32,13 @@ cat <<EOF
         3. Add fusuma using the -d option.
 
 OPTIONS:
+    -u|--uninstall          Flag all packages after this argument for uninstall.
     -l|--linux              Explicitly specify linux as operating system.
     -m|--mac                Explicitly specify macOS as operating system.
-       --uninstall_nvidia   Uninstalls all nvidia software. If specified, the script will exit afterwards.
-       --uninstall_docker   Uninstalls docker. If specified, the script will exit afterwards.
+       --uninstall_nvidia   Uninstalls all nvidia software. If specified, the
+                            script will exit afterwards.
+       --uninstall_docker   Uninstalls docker. If specified, the script will
+                            exit afterwards.
 EOF
 }
 
@@ -80,12 +84,15 @@ configure_vim(){
 
 
 main(){
-  if [ -z "$PACKAGES_TO_INSTALL" ]; then
+  if [ -z "$PACKAGES_TO_INSTALL" ] && [ -z "$PACKAGES_TO_UNINSTALL" ]; then
     usage
     exit 0
   fi
 
   check_which_os
+  for PACKAGE in $PACKAGES_TO_UNINSTALL; do
+    uninstall_"$PACKAGE"
+  done
   for PACKAGE in $PACKAGES_TO_INSTALL; do
     install_"$PACKAGE"
   done
@@ -93,11 +100,18 @@ main(){
 
 unset OS
 unset PACKAGES_TO_INSTALL
+unset PACKAGES_TO_UNINSTALL
+install=true
+
 while [[ $# -gt 0 ]]; do
 
   if is_package_name "$1" ; then
+    if [ "$install" = true ] ; then
       PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} $1"
-      shift 1
+    else
+      PACKAGES_TO_UNINSTALL="${PACKAGES_TO_UNINSTALL} $1"
+    fi
+    shift 1
   else
     case $1 in
       -h|--help)
@@ -110,6 +124,10 @@ while [[ $# -gt 0 ]]; do
 
       -m|--mac)
       OS="mac"
+      shift 1 ;;
+
+      -u|--uninstall)
+      install=false
       shift 1 ;;
 
       --uninstall_nvidia)
