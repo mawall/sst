@@ -18,6 +18,7 @@ install_dropbox(){
   wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
   sudo wget -O /usr/local/bin/dropbox "https://www.dropbox.com/download?dl=packages/dropbox.py"
   sudo chmod +x /usr/local/bin/dropbox
+  echo fs.inotify.max_user_watches=100000 | sudo tee -a /etc/sysctl.conf; sudo sysctl -p
   dropbox start
   dropbox autostart y && dropbox exclude add $EXCLUDED_DROPBOX_DIRS
   mkdir ~/.config/autostart && cat <<EOF > ~/.config/autostart/dropbox.desktop
@@ -26,4 +27,23 @@ Type=Application
 Name=Dropbox
 Exec=dropbox start
 EOF
+}
+
+uninstall_dropbox(){
+  read -p "Do you really want to uninstall dropbox [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 1
+  else
+    echo_yellow "Uninstalling dropbox"
+    dropbox stop
+    dropbox status  # Should report "not running"
+    rm -rf ~/.dropbox-dist
+    rm -rf /var/lib/dropbox
+    rm -rf ~/.dropbox*
+    sudo apt-get remove nautilus-dropbox
+    sudo apt-get remove dropbox
+    rm /etc/apt/source.d/dropbox
+    echo "done."
+  fi
 }

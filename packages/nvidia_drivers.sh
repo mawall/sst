@@ -18,3 +18,20 @@ install_nvidia_drivers(){
 
   echo_yellow "Reboot machine now!" && exit 0
 }
+
+uninstall_nvidia_drivers(){
+  if [ ! "$OS" = "linux" ]; then
+    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
+  fi
+
+  echo_red "[WARNING] This will uninstall all nvidia software!"
+  read -p "Do you really want to uninstall all nvidia software [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 1
+  else
+    sudo apt-get -y purge '^nvidia-.*'
+    sudo apt-get -y purge '^libnvidia-.*'
+    sudo apt-get -y autoremove
+  fi
+}

@@ -18,3 +18,15 @@ install_nvidia_docker(){
   sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
   sudo systemctl restart docker
 }
+
+uninstall_nvidia_docker(){
+  read -p "Do you really want to uninstall nvidia_docker [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 1
+  else
+    echo_yellow "Uninstalling nvidia_docker"
+    sudo apt-get -y purge nvidia-docker
+    sudo apt-get -y purge nvidia-docker2
+  fi
+}

@@ -21,3 +21,14 @@ install_nvidia_cuda(){
 
   sudo systemctl restart docker
 }
+
+uninstall_nvidia_cuda(){
+  read -p "Do you really want to uninstall nvidia_cuda [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 1
+  else
+    echo_yellow "Uninstalling nvidia_cuda"
+    sudo apt-get -y purge nvidia-cuda*
+  fi
+}

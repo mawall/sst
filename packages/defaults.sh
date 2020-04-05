@@ -6,6 +6,10 @@ install_defaults(){
   install_"$OS"
 }
 
+uninstall_defaults(){
+  echo_red "Uninstall defaults is not implemented"
+}
+
 install_linux(){
   echo_yellow "Installing linux defaults"
   cd ~
@@ -87,4 +91,12 @@ install_mac(){
   "$(brew --prefix)"/opt/fzf/install
 
   echo_yellow "Successfully installed mac defaults"
+}
+
+configure_vim(){
+  tic -o ~/.terminfo $ROOT_DIR/config/xterm-256color.terminfo
+  export TERM=xterm-256color
+
+  # Install Vundle
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 }

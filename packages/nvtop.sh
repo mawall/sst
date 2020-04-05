@@ -25,3 +25,17 @@ cmake .. -DNVML_RETRIEVE_HEADER_ONLINE=True
 make && sudo make install" >&2
   fi
 }
+
+uninstall_nvtop(){
+  read -p "Do you really want to uninstall nvtop [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 1
+  else
+    echo_yellow "Uninstalling nvtop"
+    sudo rm -rf /usr/local/bin/nvtop
+    sudo rm -rf /usr/local/man/man1/nvtop.1
+    sudo rm -rf /usr/local/share/man/man1/nvtop.1
+    echo "done."
+  fi
+}

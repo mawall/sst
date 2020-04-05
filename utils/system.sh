@@ -1,6 +1,6 @@
 function_exists(){
-    declare -f $1 > /dev/null
-    return $?
+  declare -f $1 > /dev/null
+  return $?
 }
 
 verify_package_completeness(){

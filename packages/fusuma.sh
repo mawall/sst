@@ -2,7 +2,6 @@ describe_fusuma(){
   echo "Multitouch gestures for Ubuntu."
 }
 
-
 install_fusuma(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "installing fusuma is currently only implemented for linux" && return 1
@@ -21,4 +20,17 @@ install_fusuma(){
   # create config file
   mkdir -p ~/.config/fusuma
   cp $ROOT_DIR/config/fusuma.yml ~/.config/fusuma/config.yml
+}
+
+uninstall_fusuma(){
+  read -p "Do you really want to uninstall fusuma [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 1
+  else
+    echo_yellow "Uninstalling fusuma"
+    gem uninstall fusuma
+    rm -rf ~/.config/fusuma
+    apt-get autoremove
+  fi
 }

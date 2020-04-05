@@ -32,45 +32,17 @@ cat <<EOF
         3. Add fusuma using the -d option.
 
 OPTIONS:
-    -u|--uninstall             Flag all packages after this argument for uninstall.
+    -u|--uninstall             All packages specified after this argument will
+                               be removed. Uninstalls will be done first, before
+                               any additional installations.
     -l|--linux                 Explicitly specify linux as operating system.
     -m|--mac                   Explicitly specify macOS as operating system.
-       --uninstall_nvidia      Uninstalls all nvidia software. If specified, the
-                               script will exit afterwards.
-       --uninstall_docker      Uninstalls docker. If specified, the script will
-                               exit afterwards.
 EOF
 }
 
-uninstall_nvidia_all(){
-  if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
-  fi
-
-  read -p "Do you really want to uninstall all nvidia software [y/n]? " -n 1 -r
-  echo
-  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
-  else
-    sudo apt-get -y purge '^nvidia-.*'
-    sudo apt-get -y purge '^libnvidia-.*'
-    sudo apt-get -y autoremove
-  fi
-}
-
-configure_vim(){
-  tic -o ~/.terminfo $ROOT_DIR/config/xterm-256color.terminfo
-  export TERM=xterm-256color
-
-  # Install Vundle
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-}
-
-
 main(){
-   verify_package_completeness
+  verify_package_completeness
   if [ -z "$PACKAGES_TO_INSTALL" ] && [ -z "$PACKAGES_TO_UNINSTALL" ]; then
-    echo_red "No packages specified."
     usage
     exit 0
   fi
@@ -115,14 +87,6 @@ while [[ $# -gt 0 ]]; do
       -u|--uninstall)
       install=false
       shift 1 ;;
-
-      --uninstall_nvidia)
-      uninstall_nvidia_all
-      exit 0 ;;
-
-      --uninstall_docker)
-      uninstall_docker
-      exit 0 ;;
 
       *)
       echo_red "Unknown option: $1";

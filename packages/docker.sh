@@ -29,6 +29,7 @@ uninstall_docker(){
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
     echo_red "Exiting." && exit 1
   else
+    echo_yellow "Uninstalling docker"
     sudo apt-get -y purge '^docker-.*'
     sudo apt-get -y purge containerd runc
     sudo apt-get -y autoremove
