@@ -32,6 +32,8 @@ cat <<EOF
         3. Add fusuma using the -d option.
 
 OPTIONS:
+    -i|--install               All packages specified after this argument will
+                               be installed. This flag is active by default.
     -u|--uninstall             All packages specified after this argument will
                                be removed. Uninstalls will be done first, before
                                any additional installations.
@@ -76,16 +78,20 @@ while [[ $# -gt 0 ]]; do
       usage
       exit 0 ;;
 
+      -i|--install)
+      install=true
+      shift 1 ;;
+
+      -u|--uninstall)
+      install=false
+      shift 1 ;;
+
       -l|--linux)
       OS="linux"
       shift 1 ;;
 
       -m|--mac)
       OS="mac"
-      shift 1 ;;
-
-      -u|--uninstall)
-      install=false
       shift 1 ;;
 
       *)
