@@ -22,10 +22,6 @@ echo -e "$PKG_INFO" | awk -F '+++' '
   printf "        - %-20s %s\n", $1, $2 }'
 cat <<EOF
 
-    Tested on :
-        - Ubuntu 18.04
-        - macOS Mojave
-
     After the installation, remember to:
         - Use 'prefix + I' when first starting tmux to install plugins.
     If you installed fusuma:
