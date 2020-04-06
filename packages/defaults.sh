@@ -1,5 +1,5 @@
 describe_defaults(){
-  echo "Basic utilities including oh my zsh, tmux and fzf."
+  echo "Basic utilities including oh my zsh, tmux, fzf, htop, ncdu and Marcus' dotfiles."
 }
 
 install_defaults(){

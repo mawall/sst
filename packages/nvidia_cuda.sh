@@ -1,5 +1,5 @@
 describe_nvidia_cuda(){
-  echo "Installs kernel headers and latest cuda packages."
+  echo "Kernel headers and latest cuda packages."
 }
 
 install_nvidia_cuda(){

@@ -1,5 +1,5 @@
 describe_docker(){
-  echo "Latest stable release for distribution."
+  echo "Latest stable docker release for distribution."
 }
 
 install_docker(){
