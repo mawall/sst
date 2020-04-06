@@ -2,6 +2,10 @@ describe_dropbox(){
   echo "Dropbox daemon."
 }
 
+listcmd_dropbox(){
+  echo "dropbox"
+}
+
 install_dropbox(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "installing dropbox is currently only implemented for linux" && return 1

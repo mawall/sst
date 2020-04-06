@@ -2,6 +2,10 @@ describe_defaults(){
   echo "Basic utilities including oh my zsh, tmux, fzf, htop, ncdu and Marcus' dotfiles."
 }
 
+listcmd_defaults(){
+  echo "vim zsh git curl htop bmon ncdu tmux fzf"
+}
+
 install_defaults(){
   install_"$OS"
 }

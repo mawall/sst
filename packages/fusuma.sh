@@ -2,6 +2,10 @@ describe_fusuma(){
   echo "Multitouch gestures for Ubuntu."
 }
 
+listcmd_fusuma(){
+  echo "fusuma"
+}
+
 install_fusuma(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "installing fusuma is currently only implemented for linux" && return 1

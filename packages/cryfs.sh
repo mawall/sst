@@ -2,6 +2,10 @@ describe_cryfs(){
   echo "A cryptographic file system."
 }
 
+listcmd_cryfs(){
+  echo "cryfs"
+}
+
 install_cryfs(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "installing cryfs is currently only implemented for linux" && return 1

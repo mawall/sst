@@ -124,7 +124,6 @@ get_package_names(){
 }
 
 is_package_name(){
-  get_package_names
   for pn in "${PKG_NAMES[@]}"; do
       if [ "$pn" == "$1" ] ; then
           return 0
@@ -147,6 +146,23 @@ get_package_info(){
       PKG_INFO+="${PKG_NAMES[$i]}+++${PKG_DESC[$i]}\n"
     else
       PKG_INFO+="${PKG_NAMES[$i]}+++${PKG_DESC[$i]}"
+    fi
+  done
+}
+
+print_status(){
+  for pn in "${PKG_NAMES[@]}"; do
+    function_exists listcmd_"$pn"
+    if [ $? -eq 0 ]; then
+      IFS=" " read -r -a pkgcmd <<< "$(listcmd_"$pn")"
+      CMDS+=( "${pkgcmd[@]}" )
+    fi
+  done
+  for cmd in "${CMDS[@]}"; do
+    if type -p "$cmd" > /dev/null 2>&1; then
+      echo_green "$cmd"
+    else
+      echo_red "$cmd"
     fi
   done
 }

@@ -2,6 +2,10 @@ describe_docker(){
   echo "Latest stable docker release for distribution."
 }
 
+listcmd_docker(){
+  echo "docker"
+}
+
 install_docker(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "installing docker is currently only implemented for linux" && return 1

@@ -2,6 +2,10 @@ describe_nvidia_drivers(){
   echo "Latest stable Nvidia drivers for Ubuntu."
 }
 
+listcmd_nvidia_drivers(){
+  echo "nvidia-smi"
+}
+
 install_nvidia_drivers(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "installing nvidia_drivers is currently only implemented for linux" && return 1

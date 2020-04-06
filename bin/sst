@@ -35,6 +35,7 @@ OPTIONS:
     -r|--remove                All packages specified after this argument will
                                be removed. Removals will be done before
                                installations.
+    -s|--status                List installation status for all known commands.
 EOF
 }
 
@@ -81,6 +82,10 @@ while [[ $# -gt 0 ]]; do
       -u|--uninstall)
       install=false
       shift 1 ;;
+
+      -s|--status)
+      print_status
+      exit 0 ;;
 
       *)
       echo_red "Unknown option: $1";

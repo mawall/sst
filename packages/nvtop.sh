@@ -2,6 +2,10 @@ describe_nvtop(){
   echo "An htop like GPU status monitor."
 }
 
+listcmd_nvtop(){
+  echo "nvtop"
+}
+
 install_nvtop(){
   if [ ! "$OS" = "linux" ]; then
     echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
