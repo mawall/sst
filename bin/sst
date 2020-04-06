@@ -35,7 +35,8 @@ OPTIONS:
     -r|--remove                All packages specified after this argument will
                                be removed. Removals will be done before
                                installations.
-    -s|--status                List installation status for all known commands.
+    -s|--status                Prints installation status for each known command
+                               as part of each package respectively.
 EOF
 }
 

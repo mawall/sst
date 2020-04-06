@@ -6,18 +6,13 @@ function_exists(){
 verify_package_completeness(){
   all_complete=true
   for pn in "${PKG_NAMES[@]}"; do
-    function_exists describe_"$pn"
-    if [ $? -eq 1 ]; then
+    if ! function_exists describe_"$pn"; then
       echo_red "Package $pn incomplete: function describe_$pn is missing"
       all_complete=false
-    fi
-    function_exists install_"$pn"
-    if [ $? -eq 1 ]; then
+    elif ! function_exists install_"$pn"; then
       echo_red "Package $pn incomplete: function install_$pn is missing"
       all_complete=false
-    fi
-    function_exists uninstall_"$pn"
-    if [ $? -eq 1 ]; then
+    elif ! function_exists uninstall_"$pn"; then
       echo_red "Package $pn incomplete: function uninstall_$pn is missing"
       all_complete=false
     fi
@@ -152,8 +147,7 @@ get_package_info(){
 
 print_status(){
   for pn in "${PKG_NAMES[@]}"; do
-    function_exists listcmd_"$pn"
-    if [ $? -eq 0 ]; then
+    if function_exists listcmd_"$pn"; then
       IFS=" " read -r -a pkgcmd <<< "$(listcmd_"$pn")"
       CMDS+=( "${pkgcmd[@]}" )
     fi
