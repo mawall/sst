@@ -35,8 +35,6 @@ OPTIONS:
     -r|--remove                All packages specified after this argument will
                                be removed. Removals will be done before
                                installations.
-    -l|--linux                 Explicitly specify linux as operating system.
-    -m|--mac                   Explicitly specify macOS as operating system.
 EOF
 }
 
@@ -82,14 +80,6 @@ while [[ $# -gt 0 ]]; do
 
       -u|--uninstall)
       install=false
-      shift 1 ;;
-
-      -l|--linux)
-      OS="linux"
-      shift 1 ;;
-
-      -m|--mac)
-      OS="mac"
       shift 1 ;;
 
       *)
