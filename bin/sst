@@ -17,7 +17,9 @@ USAGE: sst [OPTIONS] [PACKAGES]
 
     List of available packages for installation:
 EOF
-printf '        - %-20s %-10s\n' "${PKG_INFO[@]}"
+echo -e "$PKG_INFO" | awk -F '+++' '
+{ gsub(/.{45,50} /,"&\n                               ",$2)
+  printf "        - %-20s %s\n", $1, $2 }'
 cat <<EOF
 
     Tested on :
@@ -34,9 +36,9 @@ cat <<EOF
 OPTIONS:
     -i|--install               All packages specified after this argument will
                                be installed. This flag is active by default.
-    -u|--uninstall             All packages specified after this argument will
-                               be removed. Uninstalls will be done first, before
-                               any additional installations.
+    -r|--remove                All packages specified after this argument will
+                               be removed. Removals will be done before
+                               installations.
     -l|--linux                 Explicitly specify linux as operating system.
     -m|--mac                   Explicitly specify macOS as operating system.
 EOF

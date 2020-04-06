@@ -143,6 +143,10 @@ get_package_info(){
 
   unset PKG_INFO
   for (( i=0; i<${#PKG_NAMES[@]}; ++i)); do
-    PKG_INFO+=( "${PKG_NAMES[$i]}" "${PKG_DESC[$i]}" )
+    if [ $i -ne $(( ${#PKG_NAMES[@]} - 1)) ]; then
+      PKG_INFO+="${PKG_NAMES[$i]}+++${PKG_DESC[$i]}\n"
+    else
+      PKG_INFO+="${PKG_NAMES[$i]}+++${PKG_DESC[$i]}"
+    fi
   done
 }
