@@ -7,13 +7,13 @@ verify_package_completeness(){
   all_complete=true
   for pn in "${PKG_NAMES[@]}"; do
     if ! function_exists describe_"$pn"; then
-      echo_red "Package $pn incomplete: function describe_$pn is missing"
+      echo_error "Package $pn incomplete: function describe_$pn is missing"
       all_complete=false
     elif ! function_exists install_"$pn"; then
-      echo_red "Package $pn incomplete: function install_$pn is missing"
+      echo_error "Package $pn incomplete: function install_$pn is missing"
       all_complete=false
     elif ! function_exists uninstall_"$pn"; then
-      echo_red "Package $pn incomplete: function uninstall_$pn is missing"
+      echo_error "Package $pn incomplete: function uninstall_$pn is missing"
       all_complete=false
     fi
   done
@@ -32,7 +32,7 @@ binary_prompt(){
   elif [ "$current_shell" = "bash" ]; then
     read -p "$1" -n 1 -r && echo
   else
-    echo -e "\033[31m[binary_prompt] Unrecognised shell\033[0m"
+    echo_error "[binary_prompt] Unrecognised shell"
     exit 1
   fi
 
@@ -48,10 +48,10 @@ set_config(){
   # if it doesn't exist.
 
   if [ -z "$1" ] || [ -z "$2" ]; then
-    echo -e "\033[31m[set_config] Need a variable name and a value to set\033[0m"
+    echo_error "[set_config] Need a variable name and a value to set"
     exit 1
   elif [ -z "$CONFIG" ]; then
-    echo -e "\033[31m[set_config] CONFIG environment variable is not set\033[0m"
+    echo_error "[set_config] Need a variable name and a value to set"
     exit 1
   elif grep -q "$1=" "$CONFIG"; then
     sed -i "s/^\($1\s*=\s*\).*\$/\1$2/" "$CONFIG"
@@ -71,7 +71,7 @@ check_which_os(){
     display_len=$(( ${#choices[@]} > 10 ? 10 : ${#choices[@]} ))
     OS=$(printf '%s\n' "${choices[@]}" | fzf --height=$display_len)
     if [ -z "$OS" ]; then
-      echo -e "\033[31m[check_which_os] Operating system not specified\033[0m"
+      echo_error "[check_which_os] Operating system not specified"
       exit 1
     fi
   fi
@@ -109,7 +109,7 @@ get_package_names(){
   shopt -u nullglob
 
   if (( ${#filenames[@]} == 0 )); then
-    echo "No packages found" >&2
+    echo_error "No packages found"
   fi
 
   unset PKG_NAMES

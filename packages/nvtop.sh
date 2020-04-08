@@ -8,7 +8,8 @@ listcmd_nvtop(){
 
 install_nvtop(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling nvidia software is currently only implemented for linux" && return 1
+    echo_error "uninstalling nvidia software is currently only implemented for linux"
+    return 1
   fi
 
   cd ~ && echo_yellow "Installing nvtop"
@@ -34,7 +35,7 @@ uninstall_nvtop(){
   read -p "Do you really want to uninstall nvtop [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
+    echo_red "Exiting." && exit 0
   else
     echo_yellow "Uninstalling nvtop"
     sudo rm -rf /usr/local/bin/nvtop

@@ -8,7 +8,8 @@ listcmd_docker(){
 
 install_docker(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "installing docker is currently only implemented for linux" && return 1
+    echo_error "installing docker is currently only implemented for linux"
+    return 1
   fi
 
   echo_yellow "Installing latest stable docker release"
@@ -25,13 +26,14 @@ install_docker(){
 
 uninstall_docker(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "uninstalling docker is currently only implemented for linux" && return 1
+    echo_error "uninstalling docker is currently only implemented for linux"
+    return 1
   fi
 
   read -p "Do you really want to uninstall docker [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
+    echo_red "Exiting." && exit 0
   else
     echo_yellow "Uninstalling docker"
     sudo apt-get -y purge '^docker-.*'

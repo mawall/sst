@@ -8,7 +8,8 @@ listcmd_cryfs(){
 
 install_cryfs(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "installing cryfs is currently only implemented for linux" && return 1
+    echo_error "installing cryfs is currently only implemented for linux"
+    return 1
   fi
 
   echo_yellow "Installing cryfs"
@@ -26,7 +27,7 @@ uninstall_cryfs(){
   read -p "Do you really want to uninstall cryfs [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
+    echo_red "Exiting." && exit 0
   else
     echo_yellow "Uninstalling cryfs"
     sudo rm -rf /home/marcus/cryfs

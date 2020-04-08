@@ -9,3 +9,7 @@ echo_yellow(){
 echo_green(){
     /bin/echo -e "\033[92m${*}\033[0m"
 }
+
+echo_error(){
+    echo_red "${*}" 1>&2
+}

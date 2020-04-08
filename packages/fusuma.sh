@@ -8,7 +8,8 @@ listcmd_fusuma(){
 
 install_fusuma(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "installing fusuma is currently only implemented for linux" && return 1
+    echo_error "installing fusuma is currently only implemented for linux"
+    return 1
   fi
 
   # Install fusuma for trackpad multitouch gestures
@@ -30,7 +31,7 @@ uninstall_fusuma(){
   read -p "Do you really want to uninstall fusuma [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
+    echo_red "Exiting." && exit 0
   else
     echo_yellow "Uninstalling fusuma"
     gem uninstall fusuma

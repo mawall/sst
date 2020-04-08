@@ -8,7 +8,8 @@ listcmd_dropbox(){
 
 install_dropbox(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "installing dropbox is currently only implemented for linux" && return 1
+    echo_error "installing dropbox is currently only implemented for linux"
+    return 1
   fi
 
   EXCLUDED_DROPBOX_DIRS=("$HOME/Dropbox/archive"
@@ -37,7 +38,7 @@ uninstall_dropbox(){
   read -p "Do you really want to uninstall dropbox [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
+    echo_red "Exiting." && exit 0
   else
     echo_yellow "Uninstalling dropbox"
     dropbox stop

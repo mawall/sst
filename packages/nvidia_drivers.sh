@@ -8,7 +8,8 @@ listcmd_nvidia_drivers(){
 
 install_nvidia_drivers(){
   if [ ! "$OS" = "linux" ]; then
-    echo_red "installing nvidia_drivers is currently only implemented for linux" && return 1
+    echo_error "installing nvidia_drivers is currently only implemented for linux"
+    return 1
   fi
 
   echo_yellow "Installing nvidia drivers"
@@ -32,7 +33,7 @@ uninstall_nvidia_drivers(){
   read -p "Do you really want to uninstall all nvidia software [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
-    echo_red "Exiting." && exit 1
+    echo_red "Exiting." && exit 0
   else
     sudo apt-get -y purge '^nvidia-.*'
     sudo apt-get -y purge '^libnvidia-.*'

@@ -11,7 +11,7 @@ install_defaults(){
 }
 
 uninstall_defaults(){
-  echo_red "Uninstall defaults is not implemented"
+  echo_error "Uninstall defaults is not implemented"
 }
 
 install_linux(){
