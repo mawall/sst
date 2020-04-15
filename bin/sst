@@ -12,8 +12,8 @@ get_package_info
 usage(){
 cat <<EOF
 USAGE: sst [OPTIONS] [PACKAGES]
-    Marcus' system setup tool - installs and configures software and working
-    environment on unix-based systems.
+    System Setup Tool - Installs and configures software and working 
+    environments on unix-based systems.
 
     List of available packages for installation:
 EOF
