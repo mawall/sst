@@ -57,6 +57,8 @@ install_linux(){
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install
 
+  configure_vim
+
   echo_yellow "Successfully installed linux defaults"
 }
 
@@ -96,13 +98,17 @@ install_mac(){
   brew install fzf
   "$(brew --prefix)"/opt/fzf/install
 
+  configure_vim
+
   echo_yellow "Successfully installed mac defaults"
 }
 
 configure_vim(){
-  tic -o ~/.terminfo $ROOT_DIR/config/xterm-256color.terminfo
-  export TERM=xterm-256color
+#  tic -o ~/.terminfo $ROOT_DIR/config/xterm-256color.terminfo
+#  export TERM=xterm-256color
 
   # Install Vundle
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  # Install Darcula colortheme
+  git clone git@github.com:doums/darcula.git ~/.vim/bundle/darcula
 }
