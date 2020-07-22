@@ -42,7 +42,7 @@ install_linux(){
   echo_yellow "Setting up dotfiles"
   mkdir ~/.dotfiles
   mkdir ~/bin
-  git clone https://github.com/mawall/dotfiles ~/.dotfiles
+  git clone git@github.com:mawall/dotfiles.git ~/.dotfiles
   rm -rf ~/.zshrc
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
@@ -86,7 +86,7 @@ install_mac(){
   echo_yellow "Setting up dotfiles"
   mkdir ~/.dotfiles
   mkdir ~/bin
-  git clone https://github.com/mawall/dotfiles ~/.dotfiles
+  git clone git@github.com:mawall/dotfiles.git ~/.dotfiles
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
 
