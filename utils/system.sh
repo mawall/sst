@@ -75,6 +75,25 @@ check_if_linux(){
   fi
 }
 
+check_awk(){
+  # the below redirect prevents the command line expansion to print parts of the
+  # awk version description to the terminal if it contains an empty newline.
+  {
+    IFS=" " read -r -a AWKDESC <<< "$(awk -W version)"
+  } > /dev/null 2>&1
+  AWKTYPE="${AWKDESC[0]}"
+  if [ "$AWKTYPE" != "GNU" ]; then
+    echo_error "sst requires gawk"
+
+    if [[ "$OSTYPE" == "linux-gnu" ]] && binary_prompt "Do you want to install it? [y/n]? "; then
+      sudo apt update && sudo apt install -y gawk
+      echo -e "gawk installed \n"
+    else
+      exit 1
+    fi
+  fi
+}
+
 link_dotfiles(){
   # symlink dotfiles from ~/.dotfiles into home directory
 

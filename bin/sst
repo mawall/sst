@@ -41,6 +41,7 @@ EOF
 }
 
 main(){
+  check_awk
   verify_package_completeness
   if [ -z "$PACKAGES_TO_INSTALL" ] && [ -z "$PACKAGES_TO_UNINSTALL" ]; then
     usage
