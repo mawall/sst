@@ -23,19 +23,7 @@ verify_package_completeness(){
 }
 
 binary_prompt(){
-  # y/n prompts that work in bash and zsh.
-
-  current_shell=$(ps -p "$$" | awk '{if (NR!=1) {print $NF}}')
-
-  if [ "$current_shell" = "zsh" ]; then
-    read -k 1 -r "REPLY?$1" && echo
-  elif [ "$current_shell" = "bash" ]; then
-    read -p "$1" -n 1 -r && echo
-  else
-    echo_error "[binary_prompt] Unrecognised shell"
-    exit 1
-  fi
-
+  read -p "$1" -n 1 -r && echo
   if [ "$REPLY" = Y ] || [ "$REPLY" = y ]; then
     return 0
   else
