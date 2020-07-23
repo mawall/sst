@@ -31,10 +31,12 @@ binary_prompt(){
   fi
 }
 
+#######################################
+# Change values in config files or create key=value pair/config file if it doesn't exist.
+# Globals:
+#   $CONFIG
+#######################################
 set_config(){
-  # change values in config files or create key=value pair/config file
-  # if it doesn't exist.
-
   if [ -z "$1" ] || [ -z "$2" ]; then
     echo_error "[set_config] Need a variable name and a value to set"
     exit 1
@@ -75,6 +77,11 @@ check_if_linux(){
   fi
 }
 
+#######################################
+# Verify that gawk is installed
+# Globals:
+#   $OSTYPE
+#######################################
 check_awk(){
   # the below redirect prevents the command line expansion to print parts of the
   # awk version description to the terminal if it contains an empty newline.
@@ -94,9 +101,10 @@ check_awk(){
   fi
 }
 
+#######################################
+# Symlink dotfiles from ~/.dotfiles into home directory
+#######################################
 link_dotfiles(){
-  # symlink dotfiles from ~/.dotfiles into home directory
-
   dotfiles=(~/.dotfiles/.*)
   for p in "${dotfiles[@]}"; do
     f="$(echo $p | tr '/' '\n' | tail -1)"
@@ -108,9 +116,13 @@ link_dotfiles(){
   done
 }
 
+#######################################
+# Get package names from filenames in package dir.
+# Globals:
+#   ROOT_DIR
+#   PKG_NAMES
+#######################################
 get_package_names(){
-  # get package names from filenames in package dir
-
   shopt -s nullglob
   filenames=("$ROOT_DIR"/packages/*)
   shopt -u nullglob
@@ -125,6 +137,15 @@ get_package_names(){
   done
 }
 
+#######################################
+# Verify if a given string is a package name.
+# Globals:
+#   PKG_NAMES
+# Arguments:
+#   Package name to check, a string
+# Returns:
+#   0 if package name is found, non-zero if not.
+#######################################
 is_package_name(){
   for pn in "${PKG_NAMES[@]}"; do
       if [ "$pn" == "$1" ] ; then
