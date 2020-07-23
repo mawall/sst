@@ -20,13 +20,14 @@ install_linux(){
 
   echo_yellow "Installing default packages"
   sudo apt update && sudo apt install -y \
-    vim-gnome \
+    vim \
     zsh \
     git \
     curl \
     htop \
     bmon \
     ncdu \
+    openssh-server \
     ecryptfs-utils
 
   echo_yellow "Installing powerline fonts"
