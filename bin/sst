@@ -32,7 +32,7 @@ cat <<EOF
 OPTIONS:
     -i|--install               All packages specified after this argument will
                                be installed. This flag is active by default.
-    -r|--remove                All packages specified after this argument will
+    -u|--uninstall             All packages specified after this argument will
                                be removed. Removals will be done before
                                installations.
     -s|--status                Prints installation status for each known command
