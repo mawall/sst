@@ -8,14 +8,18 @@ listcmd_trackpoint_config(){
 
 install_trackpoint_config(){
   if [ ! "$OS" = "linux" ]; then
-    echo_error "installing fusuma is currently only implemented for linux"
+    echo_error "installing trackpoint config is currently only implemented for linux"
     return 1
   fi
 
   echo_yellow "Installing trackpoint config"
-  sudo apt install xserver-xorg-input-libinput-hwe-18.04
-  cp $ROOT_DIR/config/10-trackpoint.rules /etc/udev/rules.d/10-trackpoint.rules
-  cp $ROOT_DIR/config/90-libinput.conf /usr/share/X11/xorg.conf.d/90-libinput.conf
+  # Adapted from https://baach.de/Members/jhb/fixing-the-trackpoint-on-ubuntu
+  sudo apt-get install xserver-xorg-input-synaptics-hwe-18.04 xserver-xorg-input-evdev-hwe-18.04
+  sudo apt-get remove xserver-xorg-input-libinput xserver-xorg-input-libinput-hwe-18.04
+  cp $ROOT_DIR/config/20-thinkpad.conf /usr/share/X11/xorg.conf.d/20-thinkpad.conf
+  TRACKPOINT_NAME="$(xinput --list --name-only | grep TrackPoint)"
+  echo "xinput set-prop ${TRACKPOINT_NAME} 297 0.75" > ~/.xinitrc
+  echo_yellow "Reboot to apply changes"
 }
 
 uninstall_trackpoint_config(){
@@ -25,7 +29,9 @@ uninstall_trackpoint_config(){
     echo_red "Exiting." && exit 0
   else
     echo_yellow "Removing trackpoint config"
-    rm -rf /etc/udev/rules.d/10-trackpoint.rules
-    rm -rf /usr/share/X11/xorg.conf.d/90-libinput.conf
+    sudo apt-get install xserver-xorg-input-libinput xserver-xorg-input-libinput-hwe-18.04
+    sudo apt-get remove xserver-xorg-input-synaptics-hwe-18.04 xserver-xorg-input-evdev-hwe-18.04
+    rm -rf /usr/share/X11/xorg.conf.d/20-thinkpad.conf
+    rm -rf ~/.xinitrc
   fi
 }
