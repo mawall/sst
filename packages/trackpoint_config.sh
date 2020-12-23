@@ -18,7 +18,7 @@ install_trackpoint_config(){
   sudo apt-get remove xserver-xorg-input-libinput xserver-xorg-input-libinput-hwe-18.04
   cp $ROOT_DIR/config/20-thinkpad.conf /usr/share/X11/xorg.conf.d/20-thinkpad.conf
   TRACKPOINT_NAME="$(xinput --list --name-only | grep TrackPoint)"
-  echo "xinput set-prop ${TRACKPOINT_NAME} 297 0.75" > ~/.xinitrc
+  echo "xinput set-prop ${TRACKPOINT_NAME} 297 2.25" > ~/.xinitrc
   echo_yellow "Reboot to apply changes"
 }
 
