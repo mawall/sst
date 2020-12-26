@@ -186,6 +186,12 @@ get_package_info(){
 }
 
 print_status(){
+  # List all installed apps on mac_os
+  if [[ "$OS" == "mac_os" ]]; then
+    APPLICATIONS=()
+    while IFS='' read -r line; do APPLICATIONS+=("$line"); done < <(mdfind "kMDItemKind == 'Application'")
+  fi
+  # List package commands
   for pn in "${PKG_NAMES[@]}"; do
     if function_exists listcmd_"$pn"; then
       IFS=" " read -r -a pkgcmd <<< "$(listcmd_"$pn")"
@@ -194,6 +200,10 @@ print_status(){
   done
   for cmd in "${CMDS[@]}"; do
     if type -p "$cmd" > /dev/null 2>&1; then
+      echo_green "$cmd"
+    # Compare installed application names with package commands on mac_os
+    # Mainly to assess if GUI clients such as dropbox are installed
+    elif [[ "$OS" == "mac_os" ]] && printf -- '%s\n'  "${APPLICATIONS[@]}" | grep -iq "${cmd}.app"; then
       echo_green "$cmd"
     else
       echo_red "$cmd"
