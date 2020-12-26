@@ -41,7 +41,6 @@ install_linux(){
   mkdir ~/.dotfiles
   mkdir ~/bin
   git clone git@github.com:mawall/dotfiles.git ~/.dotfiles
-  rm -rf ~/.zshrc
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
 

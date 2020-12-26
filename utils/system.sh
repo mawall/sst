@@ -108,14 +108,21 @@ check_awk(){
 
 #######################################
 # Symlink dotfiles from ~/.dotfiles into home directory
+# Globals:
+#   $HOME
 #######################################
 link_dotfiles(){
-  dotfiles=(~/.dotfiles/.*)
+  dotfiles=("${HOME}/.dotfiles/."*)
   for p in "${dotfiles[@]}"; do
+    # extract basenames from list of filepaths
     f="$(echo $p | tr '/' '\n' | tail -1)"
-    if ! grep -Fxq "$f" ~/.dotfiles/.gitignore_global && [ "$f" != '.git' ]
-    then
-      ln -s ~/.dotfiles/"$f" ~
+    # verify that filenames are not listed in current .gitignore_global
+    if ! grep -Fxq "$f" "${HOME}/.dotfiles/.gitignore_global" && [ "$f" != '.git' ]; then
+      if [[ -f "${HOME}/$f" ]]; then
+        echo "${HOME}/${f} exists. Renaming to: ${f}_$(date +"%Y-%m-%d")"
+        mv "${HOME}/$f" "${HOME}/${f}_$(date +"%Y-%m-%d")"
+      fi
+      ln -s "${HOME}/.dotfiles/${f}" "${HOME}/$f"
       echo "Linked $f"
     fi
   done
