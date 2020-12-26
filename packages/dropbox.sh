@@ -6,12 +6,11 @@ listcmd_dropbox(){
   echo "dropbox"
 }
 
-install_dropbox(){
-  if [ ! "$OS" = "linux" ]; then
-    echo_error "installing dropbox is currently only implemented for linux"
-    return 1
-  fi
+install_defaults(){
+  install_"$OS"
+}
 
+install_linux(){
   EXCLUDED_DROPBOX_DIRS=("$HOME/Dropbox/archive"
                          "$HOME/Dropbox/data"
                          "$HOME/Dropbox/photos"
@@ -34,7 +33,12 @@ Exec=dropbox start
 EOF
 }
 
-uninstall_dropbox(){
+install_mac_os(){
+  echo_yellow "Installing dropbox"
+  brew install --cask dropbox
+}
+
+uninstall_linux(){
   read -p "Do you really want to uninstall dropbox [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
@@ -49,6 +53,18 @@ uninstall_dropbox(){
     sudo apt-get remove nautilus-dropbox
     sudo apt-get remove dropbox
     rm /etc/apt/source.d/dropbox
+    echo "done."
+  fi
+}
+
+uninstall_mac_os(){
+  read -p "Do you really want to uninstall dropbox [y/n]? " -n 1 -r
+  echo
+  if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
+    echo_red "Exiting." && exit 0
+  else
+    echo_yellow "Uninstalling dropbox"
+    brew uninstall dropbox
     echo "done."
   fi
 }
