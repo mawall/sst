@@ -6,7 +6,7 @@ listcmd_dropbox(){
   echo "dropbox"
 }
 
-install_defaults(){
+install_dropbox(){
   install_"$OS"
 }
 
@@ -36,6 +36,10 @@ EOF
 install_mac_os(){
   echo_yellow "Installing dropbox"
   brew install --cask dropbox
+}
+
+uninstall_dropbox(){
+  install_"$OS"
 }
 
 uninstall_linux(){
