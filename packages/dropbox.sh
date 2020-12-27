@@ -11,21 +11,27 @@ install_dropbox(){
 }
 
 install_dropbox_linux(){
-  EXCLUDED_DROPBOX_DIRS=("$HOME/Dropbox/archive"
-                         "$HOME/Dropbox/data"
-                         "$HOME/Dropbox/photos"
-                         "$HOME/Dropbox/private"
-                         "$HOME/Dropbox/Kamera-Uploads"
-                         "$HOME/Dropbox/Camera-Uploads")
+  EXCLUDED_DROPBOX_DIRS=("${HOME}/Dropbox/archive"
+                         "${HOME}/Dropbox/data"
+                         "${HOME}/Dropbox/Kamera-Uploads"
+                         "${HOME}/Dropbox/Camera-Uploads"
+                         "${HOME}/Dropbox/movies"
+                         "${HOME}/Dropbox/music"
+                         "${HOME}/Dropbox/photos"
+                         "${HOME}/Dropbox/private"
+                         "${HOME}/Dropbox/public"
+                         "${HOME}/Dropbox/software")
 
   cd ~ && echo_yellow "Installing dropbox"
   wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
   sudo wget -O /usr/local/bin/dropbox "https://www.dropbox.com/download?dl=packages/dropbox.py"
   sudo chmod +x /usr/local/bin/dropbox
   echo fs.inotify.max_user_watches=100000 | sudo tee -a /etc/sysctl.conf; sudo sysctl -p
-  dropbox start
-  dropbox autostart y && dropbox exclude add $EXCLUDED_DROPBOX_DIRS
-  mkdir ~/.config/autostart && cat <<EOF > ~/.config/autostart/dropbox.desktop
+  nohup dropbox start &
+  sleep 40  # Wait until dropbox has started to sync, otherwise exclude will fail
+  dropbox autostart y && dropbox exclude add "${EXCLUDED_DROPBOX_DIRS[@]}"
+  mkdir ~/.config/autostart
+  cat <<EOF > ~/.config/autostart/dropbox.desktop
 [Desktop Entry]
 Type=Application
 Name=Dropbox
@@ -52,13 +58,13 @@ uninstall_dropbox_linux(){
   else
     echo_yellow "Uninstalling dropbox"
     dropbox stop
-    dropbox status  # Should report "not running"
     rm -rf ~/.dropbox-dist
     rm -rf /var/lib/dropbox
     rm -rf ~/.dropbox*
     sudo apt-get remove nautilus-dropbox
     sudo apt-get remove dropbox
     rm /etc/apt/source.d/dropbox
+    rm ~/.config/autostart/dropbox.desktop
     echo "done."
   fi
 }
@@ -71,6 +77,6 @@ uninstall_dropbox_mac_os(){
   else
     echo_yellow "Uninstalling dropbox"
     brew uninstall dropbox
-    echo "done."
+    echo "done."~/.config/autostart/dropbox.desktop
   fi
 }
