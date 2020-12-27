@@ -25,6 +25,7 @@ install_fusuma(){
   # create config file
   mkdir -p ~/.config/fusuma
   cp $ROOT_DIR/config/fusuma.yml ~/.config/fusuma/config.yml
+  echo_yellow "Successfully installed fusuma"
 }
 
 uninstall_fusuma(){

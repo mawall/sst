@@ -21,6 +21,7 @@ install_nvidia_cuda(){
   sudo apt-get -y install nvidia-cuda-dev nvidia-cuda-doc nvidia-cuda-gdb nvidia-cuda-toolkit nvidia-container-runtime
 
   sudo systemctl restart docker
+  echo_yellow "Successfully installed nvidia_cuda"
 }
 
 uninstall_nvidia_cuda(){

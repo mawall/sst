@@ -7,10 +7,10 @@ listcmd_dropbox(){
 }
 
 install_dropbox(){
-  install_"$OS"
+  install_dropbox_"$OS"
 }
 
-install_linux(){
+install_dropbox_linux(){
   EXCLUDED_DROPBOX_DIRS=("$HOME/Dropbox/archive"
                          "$HOME/Dropbox/data"
                          "$HOME/Dropbox/photos"
@@ -31,18 +31,20 @@ Type=Application
 Name=Dropbox
 Exec=dropbox start
 EOF
+  echo_yellow "Successfully installed dropbox"
 }
 
-install_mac_os(){
+install_dropbox_mac_os(){
   echo_yellow "Installing dropbox"
   brew install --cask dropbox
+  echo_yellow "Successfully installed dropbox"
 }
 
 uninstall_dropbox(){
-  install_"$OS"
+  uninstall_dropbox_"$OS"
 }
 
-uninstall_linux(){
+uninstall_dropbox_linux(){
   read -p "Do you really want to uninstall dropbox [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then
@@ -61,7 +63,7 @@ uninstall_linux(){
   fi
 }
 
-uninstall_mac_os(){
+uninstall_dropbox_mac_os(){
   read -p "Do you really want to uninstall dropbox [y/n]? " -n 1 -r
   echo
   if [ ! "$REPLY" = Y ] && [ ! "$REPLY" = y ]; then

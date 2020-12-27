@@ -12,6 +12,7 @@ install_trackpoint_config(){
   sudo apt install xserver-xorg-input-libinput-hwe-18.04
   sudo cp $ROOT_DIR/config/10-trackpoint.rules /etc/udev/rules.d/10-trackpoint.rules
   sudo cp $ROOT_DIR/config/90-libinput.conf /usr/share/X11/xorg.conf.d/90-libinput.conf
+  echo_yellow "Successfully installed trackpoint_config"
 }
 
 uninstall_trackpoint_config(){

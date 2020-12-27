@@ -7,14 +7,14 @@ listcmd_defaults(){
 }
 
 install_defaults(){
-  install_"$OS"
+  install_defaults_"$OS"
 }
 
 uninstall_defaults(){
   echo_error "Uninstall defaults is not implemented"
 }
 
-install_linux(){
+install_defaults_linux(){
   echo_yellow "Installing linux defaults"
   cd ~
 
@@ -63,14 +63,12 @@ install_linux(){
   zsh
 }
 
-install_mac_os(){
+install_defaults_mac_os(){
   echo_yellow "Installing mac_os defaults"
   cd ~
 
   echo_yellow "Installing default packages"
-  brew install --cask osxfuse
-  brew install cryfs \
-               htop \
+  brew install htop \
                bmon \
                ncdu
 
@@ -103,7 +101,6 @@ install_mac_os(){
   configure_vim
 
   echo_yellow "Successfully installed mac_os defaults"
-  echo_yellow "You must reboot for the installation of osxfuse to take effect"
   zsh
 }
 
