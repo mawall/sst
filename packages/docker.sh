@@ -22,6 +22,7 @@ install_docker(){
   sudo apt -y install docker-ce docker-ce-cli containerd.io
   sudo usermod -aG docker $USER
   newgrp docker
+  echo_yellow "Successfully installed docker"
 }
 
 uninstall_docker(){

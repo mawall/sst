@@ -18,6 +18,7 @@ install_nvidia_docker(){
 
   sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
   sudo systemctl restart docker
+  echo_yellow "Successfully installed nvidia_docker"
 }
 
 uninstall_nvidia_docker(){

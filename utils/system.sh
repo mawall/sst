@@ -54,10 +54,10 @@ check_which_os(){
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
     OS="linux"
   elif [[ "$OSTYPE" == "darwin"* ]]; then
-    OS="mac-os"
+    OS="mac_os"
   else
     echo "Please choose your operating system:"
-    choices=("linux" "mac-os")
+    choices=("linux" "mac_os")
     display_len=$(( ${#choices[@]} > 10 ? 10 : ${#choices[@]} ))
     OS=$(printf '%s\n' "${choices[@]}" | fzf --height=$display_len)
     if [ -z "$OS" ]; then
@@ -67,12 +67,20 @@ check_which_os(){
   fi
 }
 
-check_if_linux(){
-  if [ -z "$OS" ]; then
-    if [ "$OSTYPE" = "linux-gnu" ] || binary_prompt "Are you on linux [y/n]? "; then
-      OS="linux"
+#######################################
+# Verify that homebrew is installed
+# Globals:
+#   $OS
+#######################################
+check_homebrew(){
+  if [[ "$OS" == "mac_os" ]] && ! type -p brew > /dev/null 2>&1; then
+    echo_error "sst requires Homebrew"
+
+    if binary_prompt "Do you want to install it? [y/n]? "; then
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
+        echo -e "Homebrew installed \n"
     else
-      OS="other"
+      exit 1
     fi
   fi
 }
@@ -80,21 +88,18 @@ check_if_linux(){
 #######################################
 # Verify that gawk is installed
 # Globals:
-#   $OSTYPE
+#   $OS
 #######################################
 check_awk(){
   # the below redirect prevents the command line expansion to print parts of the
   # awk version description to the terminal if it contains an empty newline.
-  {
-    IFS=" " read -r -a AWKDESC <<< "$(awk -W version)"
-  } > /dev/null 2>&1
-  AWKTYPE="${AWKDESC[0]}"
-  if [ "$AWKTYPE" != "GNU" ]; then
-    echo_error "sst requires gawk"
+  if ! awk --version 2>&1 | grep -q "GNU Awk"; then
+    echo_error "sst requires GNU Awk"
 
-    if [[ "$OSTYPE" == "linux-gnu" ]] && binary_prompt "Do you want to install it? [y/n]? "; then
-      sudo apt update && sudo apt install -y gawk
-      echo -e "gawk installed \n"
+    if [[ "$OS" == "linux" ]] && binary_prompt "Do you want to install it? [y/n]? "; then
+      sudo apt update && sudo apt install -y gawk && echo -e "GNU Awk installed \n"
+    elif [[ "$OS" == "mac_os" ]] && binary_prompt "Do you want to install it? [y/n]? "; then
+      brew install gawk && echo -e "GNU Awk installed \n"
     else
       exit 1
     fi
@@ -103,14 +108,21 @@ check_awk(){
 
 #######################################
 # Symlink dotfiles from ~/.dotfiles into home directory
+# Globals:
+#   $HOME
 #######################################
 link_dotfiles(){
-  dotfiles=(~/.dotfiles/.*)
+  dotfiles=("${HOME}/.dotfiles/."*)
   for p in "${dotfiles[@]}"; do
+    # extract basenames from list of filepaths
     f="$(echo $p | tr '/' '\n' | tail -1)"
-    if ! grep -Fxq "$f" ~/.dotfiles/.gitignore_global && [ "$f" != '.git' ]
-    then
-      ln -s ~/.dotfiles/"$f" ~
+    # verify that filenames are not listed in current .gitignore_global
+    if ! grep -Fxq "$f" "${HOME}/.dotfiles/.gitignore_global" && [ "$f" != '.git' ]; then
+      if [[ -f "${HOME}/$f" ]]; then
+        echo "${HOME}/${f} exists. Renaming to: ${f}_$(date +"%Y-%m-%d")"
+        mv "${HOME}/$f" "${HOME}/${f}_$(date +"%Y-%m-%d")"
+      fi
+      ln -s "${HOME}/.dotfiles/${f}" "${HOME}/$f"
       echo "Linked $f"
     fi
   done
@@ -174,6 +186,12 @@ get_package_info(){
 }
 
 print_status(){
+  # List all installed applications on mac_os
+  if [[ "$OS" == "mac_os" ]]; then
+    APPLICATIONS=()
+    while IFS='' read -r line; do APPLICATIONS+=("$line"); done < <(mdfind "kMDItemKind == 'Application'")
+  fi
+  # List package commands
   for pn in "${PKG_NAMES[@]}"; do
     if function_exists listcmd_"$pn"; then
       IFS=" " read -r -a pkgcmd <<< "$(listcmd_"$pn")"
@@ -182,6 +200,10 @@ print_status(){
   done
   for cmd in "${CMDS[@]}"; do
     if type -p "$cmd" > /dev/null 2>&1; then
+      echo_green "$cmd"
+    # Find package commands as application names on mac_os
+    # Mainly to assess if GUI clients such as dropbox are installed
+    elif [[ "$OS" == "mac_os" ]] && printf -- '%s\n'  "${APPLICATIONS[@]}" | grep -iq "${cmd}.app"; then
       echo_green "$cmd"
     else
       echo_red "$cmd"

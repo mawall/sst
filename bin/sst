@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 ABSPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 ROOT_DIR=$(echo "$ABSPATH" | tr '/' '\n' | xargs -E bin | tr ' ' '/' | awk '{print "/" $0}')
@@ -41,14 +41,15 @@ EOF
 }
 
 main(){
+  check_which_os
   check_awk
+  check_homebrew
   verify_package_completeness
   if [ -z "$PACKAGES_TO_INSTALL" ] && [ -z "$PACKAGES_TO_UNINSTALL" ]; then
     usage
     exit 0
   fi
 
-  check_which_os
   for PACKAGE in $PACKAGES_TO_UNINSTALL; do
     uninstall_"$PACKAGE"
   done
@@ -86,6 +87,7 @@ while [[ $# -gt 0 ]]; do
       shift 1 ;;
 
       -s|--status)
+      check_which_os
       print_status
       exit 0 ;;
 

@@ -21,6 +21,7 @@ install_nvidia_drivers(){
 
   sudo apt-get -y install ubuntu-drivers-common && sudo ubuntu-drivers autoinstall
 
+  echo_yellow "Successfully installed nvidia_drivers"
   echo_yellow "Reboot machine now!" && exit 0
 }
 

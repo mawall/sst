@@ -29,6 +29,7 @@ try the following commands from ~/nvtop/build instead:
 cmake .. -DNVML_RETRIEVE_HEADER_ONLINE=True
 make && sudo make install" >&2
   fi
+  echo_yellow "Successfully installed nvtop"
 }
 
 uninstall_nvtop(){

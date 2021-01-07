@@ -7,14 +7,14 @@ listcmd_defaults(){
 }
 
 install_defaults(){
-  install_"$OS"
+  install_defaults_"$OS"
 }
 
 uninstall_defaults(){
   echo_error "Uninstall defaults is not implemented"
 }
 
-install_linux(){
+install_defaults_linux(){
   echo_yellow "Installing linux defaults"
   cd ~
 
@@ -37,18 +37,15 @@ install_linux(){
   cd ..
   rm -rf fonts
 
-  echo_yellow "Installing Oh my zsh"
-  RUNZSH="no"
-  KEEP_ZSHRC="yes"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
   echo_yellow "Setting up dotfiles"
   mkdir ~/.dotfiles
   mkdir ~/bin
   git clone git@github.com:mawall/dotfiles.git ~/.dotfiles
-  rm -rf ~/.zshrc
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
+
+  echo_yellow "Installing Oh my zsh"
+  RUNZSH="no" KEEP_ZSHRC="yes" sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
   echo_yellow "Installing tmux"
   sudo apt-get update
@@ -63,18 +60,17 @@ install_linux(){
   configure_vim
 
   echo_yellow "Successfully installed linux defaults"
+  zsh
 }
 
-install_mac(){
-  echo_yellow "Installing mac defaults"
+install_defaults_mac_os(){
+  echo_yellow "Installing mac_os defaults"
   cd ~
 
-  echo_yellow "Installing homebrew"
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
   echo_yellow "Installing default packages"
-  brew cask install oxfuse
-  brew install cryfs
+  brew install htop \
+               bmon \
+               ncdu
 
   echo_yellow "Installing powerline fonts"
   git clone https://github.com/powerline/fonts.git --depth=1
@@ -83,9 +79,6 @@ install_mac(){
   cd ..
   rm -rf fonts
 
-  echo_yellow "Installing Oh my zsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
   echo_yellow "Setting up dotfiles"
   mkdir ~/.dotfiles
   mkdir ~/bin
@@ -93,9 +86,13 @@ install_mac(){
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
 
+  echo_yellow "Installing Oh my zsh"
+  RUNZSH="no" KEEP_ZSHRC="yes" sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
   echo_yellow "Installing tmux"
   brew install tmux
   git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
   echo_yellow "Installing fzf"
   brew install fzf
@@ -103,7 +100,8 @@ install_mac(){
 
   configure_vim
 
-  echo_yellow "Successfully installed mac defaults"
+  echo_yellow "Successfully installed mac_os defaults"
+  zsh
 }
 
 configure_vim(){
