@@ -13,7 +13,7 @@ install_cryfs(){
 install_cryfs_linux(){
   echo_yellow "Installing cryfs"
   sudo apt install -y libcurl4-openssl-dev libssl-dev libfuse-dev
-  pip install conan
+  pip3 install conan
   cd ~ && git clone https://github.com/cryfs/cryfs.git cryfs && cd cryfs
   mkdir build && cd build
   conan install .. --build=missing -s compiler.libcxx=libstdc++11
