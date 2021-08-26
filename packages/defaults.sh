@@ -40,7 +40,7 @@ install_defaults_linux(){
   echo_yellow "Setting up dotfiles"
   mkdir ~/.dotfiles
   mkdir ~/bin
-  git clone git@github.com:mawall/dotfiles.git ~/.dotfiles
+  git clone https://github.com/mawall/dotfiles.git ~/.dotfiles
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
 
@@ -82,7 +82,7 @@ install_defaults_mac_os(){
   echo_yellow "Setting up dotfiles"
   mkdir ~/.dotfiles
   mkdir ~/bin
-  git clone git@github.com:mawall/dotfiles.git ~/.dotfiles
+  git clone https://github.com/mawall/dotfiles.git ~/.dotfiles
   link_dotfiles
   git config --global core.excludesfile ~/.gitignore_global
 
@@ -111,5 +111,5 @@ configure_vim(){
   # Install Vundle
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   # Install Darcula colortheme
-  git clone git@github.com:doums/darcula.git ~/.vim/bundle/darcula
+  git clone https://github.com/doums/darcula.git ~/.vim/bundle/darcula
 }
