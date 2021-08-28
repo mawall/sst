@@ -100,6 +100,9 @@ install_defaults_mac_os(){
 
   configure_vim
 
+  echo_yellow "Installing rectangle"
+  brew install rectangle
+
   echo_yellow "Successfully installed mac_os defaults"
   zsh
 }
